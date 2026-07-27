@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dealer Connect 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f5f5f5;
+color:#333;
+}
+
+.hero{
+
+height:100vh;
+background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),
+url("https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000") center/cover;
+
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+color:white;
+
+}
+
+.card{
+
+max-width:700px;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(10px);
+padding:45px;
+border-radius:18px;
+
+}
+
+.logo{
+
+font-size:40px;
+font-weight:bold;
+
+}
+
+h1{
+
+margin-top:15px;
+font-size:42px;
+
+}
+
+.subtitle{
+
+margin:20px 0;
+
+font-size:18px;
+
+}
+
+.guest{
+
+font-size:32px;
+font-weight:bold;
+color:#FFD54F;
+margin:15px 0;
+
+}
+
+.date{
+
+margin-top:20px;
+font-size:18px;
+
+}
+
+.countdown{
+
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:30px;
+flex-wrap:wrap;
+
+}
+
+.box{
+
+background:white;
+color:#333;
+padding:15px;
+border-radius:10px;
+width:80px;
+
+}
+
+.box span{
+
+display:block;
+font-size:28px;
+font-weight:bold;
+
+}
+
+.buttons{
+
+margin-top:35px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+
+}
+
+.btn{
+
+padding:14px 25px;
+text-decoration:none;
+color:white;
+border-radius:8px;
+font-weight:600;
+
+}
+
+.maps{
+background:#2196F3;
+}
+
+.wa{
+background:#25D366;
+}
+
+.section{
+
+padding:70px 25px;
+max-width:900px;
+margin:auto;
+text-align:center;
+
+}
+
+.agenda{
+
+margin-top:30px;
+
+}
+
+.item{
+
+background:white;
+padding:20px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+footer{
+
+padding:30px;
+text-align:center;
+background:#222;
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<section class="hero">
+
+<div class="card">
+
+<div class="logo">Dealer Connect</div>
+
+<h1>Empowering Partnership,<br>Igniting Growth</h1>
+
+<p class="subtitle">
+Dengan hormat kami mengundang
+</p>
+
+<div class="guest" id="guest">
+Tamu Undangan
+</div>
+
+<div class="date">
+15 Agustus 2026<br>
+18.00 WIB
+</div>
+
+<div class="countdown">
+
+<div class="box">
+<span id="days">0</span>
+Hari
+</div>
+
+<div class="box">
+<span id="hours">0</span>
+Jam
+</div>
+
+<div class="box">
+<span id="minutes">0</span>
+Menit
+</div>
+
+<div class="box">
+<span id="seconds">0</span>
+Detik
+</div>
+
+</div>
+
+<div class="buttons">
+
+<a class="btn maps"
+href="https://maps.google.com"
+target="_blank">
+Lokasi
+</a>
+
+<a id="wa"
+class="btn wa"
+target="_blank">
+Konfirmasi Kehadiran
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2>Agenda Acara</h2>
+
+<div class="agenda">
+
+<div class="item">
+🎬 Video Opening
+</div>
+
+<div class="item">
+🎤 Sambutan Management
+</div>
+
+<div class="item">
+🍽 Dinner
+</div>
+
+<div class="item">
+📈 Business Insight
+</div>
+
+<div class="item">
+🤝 Voice of Dealer
+</div>
+
+<div class="item">
+📸 Networking & Photo Session
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+Sinarmas Multifinance © 2026
+
+</footer>
+
+<script>
+
+//==========================
+// Nama Tamu dari URL
+//==========================
+
+const params=new URLSearchParams(window.location.search);
+
+const guest=params.get("to");
+
+if(guest){
+
+document.getElementById("guest").innerHTML=
+decodeURIComponent(guest.replace(/\+/g," "));
+
+}
+
+//==========================
+// Countdown
+//==========================
+
+const eventDate=new Date("Aug 15, 2026 18:00:00").getTime();
+
+setInterval(function(){
+
+const now=new Date().getTime();
+
+const distance=eventDate-now;
+
+const days=Math.floor(distance/(1000*60*60*24));
+
+const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+
+const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
+
+const seconds=Math.floor((distance%(1000*60))/1000);
+
+document.getElementById("days").innerHTML=days;
+document.getElementById("hours").innerHTML=hours;
+document.getElementById("minutes").innerHTML=minutes;
+document.getElementById("seconds").innerHTML=seconds;
+
+},1000);
+
+//==========================
+// WhatsApp RSVP
+//==========================
+
+const phone="6281234567890";
+
+const nama=guest ? decodeURIComponent(guest.replace(/\+/g," ")) : "Tamu";
+
+const pesan=`Halo, saya ${nama}. Saya akan menghadiri acara Dealer Connect 2026.`;
+
+document.getElementById("wa").href=
+`https://wa.me/${phone}?text=${encodeURIComponent(pesan)}`;
+
+</script>
+
+</body>
+</html>
