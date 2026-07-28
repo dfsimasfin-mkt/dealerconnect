@@ -329,11 +329,10 @@ function getEventConfig() {
 function renderInvitation() {
 
     const EVENT_CONFIG = getEventConfig();
-
     const dealerName = getDealerNameFromUrl();
 
+    // render data
     document.getElementById("ownerName").textContent = dealerName;
-
     document.getElementById("eventWilayah").textContent =
         "Wilayah " + EVENT_CONFIG.wilayah;
 
@@ -347,44 +346,65 @@ function renderInvitation() {
         EVENT_CONFIG.lokasi;
 
     document.getElementById("dtPIC").textContent =
-        ${EVENT_CONFIG.picName} (${EVENT_CONFIG.picPhoneDisplay});
+        `${EVENT_CONFIG.picName} (${EVENT_CONFIG.picPhoneDisplay})`;
 
     document.title = "Undangan Dealer Connect — " + dealerName;
 
     document.getElementById("metaOgTitle")
-        .setAttribute("content",
-            "Undangan Dealer Connect — " + dealerName);
+        .setAttribute("content","Undangan Dealer Connect — " + dealerName);
 
     document.getElementById("metaOgDesc")
         .setAttribute(
             "content",
-            Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk ${dealerName}, ${EVENT_CONFIG.wilayah}.
+            `Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk ${dealerName}, ${EVENT_CONFIG.wilayah}.`
         );
 
-}
+    // =========================
+    // RSVP
+    // =========================
 
-    // Tombol RSVP: link WhatsApp + pencatatan ke spreadsheet
-    const waMessage = "Halo, saya dari " + dealerName + ". Kami konfirmasi hadir pada Dealer Connect " +
-      EVENT_CONFIG.wilayah + ", " + EVENT_CONFIG.tanggalSingkat + ".";
-    const waLink = "https://wa.me/" + EVENT_CONFIG.picPhone + "?text=" + encodeURIComponent(waMessage);
+    const waMessage =
+        `Halo, saya dari ${dealerName}. Kami konfirmasi hadir pada Dealer Connect ${EVENT_CONFIG.wilayah}, ${EVENT_CONFIG.tanggalSingkat}.`;
+
+    const waLink =
+        `https://wa.me/${EVENT_CONFIG.picPhone}?text=${encodeURIComponent(waMessage)}`;
 
     const rsvpBtn = document.getElementById("rsvpBtn");
-    rsvpBtn.setAttribute("href", waLink);
-    rsvpBtn.addEventListener("click", function () {
-      logRSVP(dealerName);
-    });
+
+    rsvpBtn.href = waLink;
+
+    rsvpBtn.onclick = function () {
+        logRSVP(dealerName, EVENT_CONFIG);
+    };
+
+}
   
 
-  function logRSVP(dealerName) {
+  function logRSVP(dealerName, EVENT_CONFIG) {
+
     try {
-      fetch(EVENT_CONFIG.rsvpWebAppUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ name: dealerName, status: "Accepted", branch: EVENT_CONFIG.branch })
-      });
-    } catch (e) { /* diamkan error jaringan, WA tetap terbuka */ }
-  }
+
+        fetch(EVENT_CONFIG.rsvpWebAppUrl, {
+
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type":"text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify({
+
+                name: dealerName,
+                status: "Accepted",
+                branch: EVENT_CONFIG.branch
+
+            })
+
+        });
+
+    } catch(e) {}
+
+}
 
   /* =========================================================
      Musik latar — coba autoplay begitu halaman dibuka.
