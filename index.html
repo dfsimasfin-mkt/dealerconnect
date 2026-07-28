@@ -240,50 +240,114 @@ background:#C9A15E;color:#fff;font-weight:700;font-size:16px;cursor:pointer}
      KONFIGURASI ACARA — ubah nilai di sini untuk event lain,
      tidak perlu menyentuh HTML/CSS di atas.
      ========================================================= */
-  const EVENT_CONFIG = {
+  const EVENTS = {
+
+  palembang: {
     wilayah: "Sumbagsel — Palembang",
     tanggal: "Kamis, 6 Agustus 2026",
     tanggalSingkat: "6 Agustus 2026",
     waktu: "18.00 – Selesai",
     lokasi: "Harper Hotel Palembang",
+
     picName: "Bama Kuspriyoko",
-    picPhone: "6281272359395",          // format internasional tanpa "+", untuk wa.me
+    picPhone: "6281272359395",
     picPhoneDisplay: "+62 812-7235-9395",
-    branch: "Palembang",                 // dikirim ke kolom "Cabang" di spreadsheet
-    rsvpWebAppUrl: "https://script.google.com/macros/s/AKfycbw_DC5KGFb-voIwW4k2hI8qMtzDNwAna0-VLr20ER5nDTrh5z2d1A7F46BD35m3tUoP/exec",
-    defaultDealerName: "Bapak/Ibu Dealer" // dipakai kalau parameter ?dealer= tidak ada di URL
-  };
+
+    branch: "Palembang",
+
+    rsvpWebAppUrl: "https://script.google.com/macros/s/AKfycbw_DC5KGFb-voIwW4k2hI8qMtzDNwAna0-VLr20ER5nDTrh5z2d1A7F46BD35m3tUoP/exec"
+  },
+
+  bali: {
+    wilayah: "Bali",
+    tanggal: "Rabu, 12 Agustus 2026",
+    tanggalSingkat: "12 Agustus 2026",
+    waktu: "18.00 – Selesai",
+    lokasi: "The Lawn Canggu",
+
+    picName: "Yuhan",
+    picPhone: "628123456789",
+    picPhoneDisplay: "+62 812-3456-789",
+
+    branch: "Denpasar",
+
+    rsvpWebAppUrl: "https://script.google.com/macros/s/xxxxxxxxxxxxxxxx/exec"
+  },
+
+  balikpapan: {
+    wilayah: "Kalimantan",
+    tanggal: "18 Agustus 2026",
+    tanggalSingkat: "18 Agustus 2026",
+    waktu: "18.00 – Selesai",
+    lokasi: "Blue Sky Hotel Balikpapan",
+
+    picName: "Andi",
+    picPhone: "628111111111",
+    picPhoneDisplay: "+62 811-1111-1111",
+
+    branch: "Balikpapan",
+
+    rsvpWebAppUrl: "https://script.google.com/macros/s/yyyyyyyyyyyyyy/exec"
+  }
+
+};
+
+/* Default jika event tidak ditemukan */
+
+const DEFAULT_EVENT = "KPNO";
 
   /* =========================================================
      Ambil nama penerima dari URL, contoh:
      https://domain-anda.com/undangan.html?dealer=DS%20Auto
      ========================================================= */
-  function getDealerNameFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const raw = params.get("dealer") || params.get("nama") || "";
-    return raw.trim() || EVENT_CONFIG.defaultDealerName;
-  }
+ function getDealerNameFromUrl() {
 
-  function renderInvitation() {
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+        params.get("dealer") ||
+        params.get("nama") ||
+        "Bapak/Ibu Dealer"
+    ).trim();
+
+}
+
+function renderInvitation() {
+
+    const EVENT_CONFIG = getEventConfig();
+
     const dealerName = getDealerNameFromUrl();
 
-    // Nama penerima
     document.getElementById("ownerName").textContent = dealerName;
 
-    // Detail acara dari EVENT_CONFIG
-    document.getElementById("eventWilayah").textContent = "Wilayah " + EVENT_CONFIG.wilayah;
-    document.getElementById("dtTanggal").textContent = EVENT_CONFIG.tanggal;
-    document.getElementById("dtWaktu").textContent = EVENT_CONFIG.waktu;
-    document.getElementById("dtLokasi").textContent = EVENT_CONFIG.lokasi;
-    document.getElementById("dtPIC").textContent = EVENT_CONFIG.picName + " (" + EVENT_CONFIG.picPhoneDisplay + ")";
+    document.getElementById("eventWilayah").textContent =
+        "Wilayah " + EVENT_CONFIG.wilayah;
 
-    // Judul halaman & meta (untuk preview link saat dibagikan)
+    document.getElementById("dtTanggal").textContent =
+        EVENT_CONFIG.tanggal;
+
+    document.getElementById("dtWaktu").textContent =
+        EVENT_CONFIG.waktu;
+
+    document.getElementById("dtLokasi").textContent =
+        EVENT_CONFIG.lokasi;
+
+    document.getElementById("dtPIC").textContent =
+        `${EVENT_CONFIG.picName} (${EVENT_CONFIG.picPhoneDisplay})`;
+
     document.title = "Undangan Dealer Connect — " + dealerName;
-    document.getElementById("metaOgTitle").setAttribute("content", "Undangan Dealer Connect — " + dealerName);
-    document.getElementById("metaOgDesc").setAttribute(
-      "content",
-      "Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk " + dealerName + ", " + EVENT_CONFIG.wilayah + "."
-    );
+
+    document.getElementById("metaOgTitle")
+        .setAttribute("content",
+            "Undangan Dealer Connect — " + dealerName);
+
+    document.getElementById("metaOgDesc")
+        .setAttribute(
+            "content",
+            `Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk ${dealerName}, ${EVENT_CONFIG.wilayah}.`
+        );
+
+}
 
     // Tombol RSVP: link WhatsApp + pencatatan ke spreadsheet
     const waMessage = "Halo, saya dari " + dealerName + ". Kami konfirmasi hadir pada Dealer Connect " +
@@ -295,7 +359,7 @@ background:#C9A15E;color:#fff;font-weight:700;font-size:16px;cursor:pointer}
     rsvpBtn.addEventListener("click", function () {
       logRSVP(dealerName);
     });
-  }
+  
 
   function logRSVP(dealerName) {
     try {
