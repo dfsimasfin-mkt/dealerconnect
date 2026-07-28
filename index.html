@@ -294,7 +294,7 @@ background:#C9A15E;color:#fff;font-weight:700;font-size:16px;cursor:pointer}
 
 /* Default jika event tidak ditemukan */
 
-const DEFAULT_EVENT = "KPNO";
+const DEFAULT_EVENT = "palembang";
 
   /* =========================================================
      Ambil nama penerima dari URL, contoh:
@@ -309,6 +309,20 @@ const DEFAULT_EVENT = "KPNO";
         params.get("nama") ||
         "Bapak/Ibu Dealer"
     ).trim();
+
+}
+
+function getEventConfig() {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const key = (params.get("event") || DEFAULT_EVENT).toLowerCase();
+
+    console.log("EVENT =", key);
+
+    console.log(EVENTS[key]);
+
+    return EVENTS[key] || EVENTS[DEFAULT_EVENT];
 
 }
 
@@ -333,7 +347,7 @@ function renderInvitation() {
         EVENT_CONFIG.lokasi;
 
     document.getElementById("dtPIC").textContent =
-        `${EVENT_CONFIG.picName} (${EVENT_CONFIG.picPhoneDisplay})`;
+        ${EVENT_CONFIG.picName} (${EVENT_CONFIG.picPhoneDisplay});
 
     document.title = "Undangan Dealer Connect — " + dealerName;
 
@@ -344,7 +358,7 @@ function renderInvitation() {
     document.getElementById("metaOgDesc")
         .setAttribute(
             "content",
-            `Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk ${dealerName}, ${EVENT_CONFIG.wilayah}.`
+            Undangan resmi Dealer Connect PT Sinarmas Multifinance untuk ${dealerName}, ${EVENT_CONFIG.wilayah}.
         );
 
 }
